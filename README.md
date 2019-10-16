@@ -75,7 +75,7 @@ rave = RaveRuby.new("YOUR_RAVE_LIVE_PUBLIC_KEY", "YOUR_RAVE_LIVE_SECRET_KEY", tr
 
 To perform account transactions, instantiate the account object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.initiate_charge`
 - `.validate_charge`
@@ -244,7 +244,7 @@ print response
 
 To perform card transactions, instantiate the card object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.initiate_charge`
 - `.get_auth_type`
@@ -370,7 +370,7 @@ It returns this response in Ruby hash with the `txRef` and `flwRef` amongst its 
 }
 ```
 
-If an error occurs during OTP validation, you will receive a response similiar to this:
+If an error occurs during OTP validation, you will receive a response similar to this:
 
 ```ruby
 {
@@ -412,7 +412,7 @@ Full sample response returned if a transaction is successfully verified:
 }
 ```
 
-NOTE: You can tokenize a card after charging the card for the first time for subsequent transactions done with the card without having to send the card details everytime a transaction is done. The card token can be gotten from the `.verify_charge` response, here's how to get the card token from our sample verify response:
+NOTE: You can tokenize a card after charging the card for the first time for subsequent transactions done with the card without having to send the card details every time a transaction is done. The card token can be gotten from the `.verify_charge` response, here's how to get the card token from our sample verify response:
 
 `response['card']['card_tokens']['embed_tokens']` which is similar to this: `flw-t1nf-75aa4a20695a54c1846e0e8bcae754ee-m03k`
 
@@ -538,7 +538,7 @@ print response
 
 This is used to process a preauthorized card transaction.
 
-Its functions includes:
+Its functions include:
 
 - `.initiate_charge`
 - `.capture`
@@ -696,7 +696,7 @@ print response
 
 To perform ghana mobile money transactions, instantiate the mobile money object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.initiate_charge`
 - `.verify_charge`
@@ -790,7 +790,7 @@ print response
 
 To perform mpesa transactions, instantiate the mpesa object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.initiate_charge`
 - `.verify_charge`
@@ -882,7 +882,7 @@ print response
 
 This is used to process and manage subaccount flow. Instantiate the subaccount object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.create_subaccount`
 - `.list_subaccounts`
@@ -1060,7 +1060,7 @@ print response
 
 This is used to process and manage payment plan flow. Instantiate the paymentplan object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.create_payment_plan`
 - `.list_payment_plans`
@@ -1250,7 +1250,7 @@ print response
 
 This is used to process and manage subscription flow. Instantiate the subscription object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.list_all_subscription`
 - `.fetch_subscription`
@@ -1386,7 +1386,7 @@ print response
 
 This is used to initiate transfer flow. Instantiate the transfer object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.initiate_transfer`
 - `.bulk_transfer`
@@ -1511,7 +1511,7 @@ It returns this response in Ruby hash. A sample response:
 
 ### `.fetch`
 
-This function is called to fetch a single transfer. It takes in transfer refernce as its argument.
+This function is called to fetch a single transfer. It takes in transfer reference as its argument.
 
 #### Sample `fetch` call:
 
@@ -1620,7 +1620,7 @@ print response
 
 To perform uganda mobile money transactions, instantiate the uganda mobile money object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.initiate_charge`
 - `.verify_charge`
@@ -1717,7 +1717,7 @@ print response
 
 To perform zambia mobile money transactions, instantiate the zambia mobile money object and pass rave object as its argument.
 
-Its functions includes:
+Its functions include:
 
 - `.initiate_charge`
 - `.verify_charge`
