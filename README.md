@@ -1,6 +1,6 @@
 # RaveRuby
 
-[![Build Status](https://travis-ci.org/MaestroJolly/rave-ruby.svg?branch=master)](https://travis-ci.org/MaestroJolly/rave-ruby) [![Gem Version](https://badge.fury.io/rb/rave_ruby.svg)](https://badge.fury.io/rb/rave_ruby)
+[![Gem Version](https://badge.fury.io/rb/rave_ruby.svg)](https://badge.fury.io/rb/rave_ruby)
 
 This is a Ruby gem for easy integration of Rave API for various applications written in Ruby language from [Rave](https://rave.flutterwave.com) by [Flutterwave.](https://developer.flutterwave.com/reference)
 
