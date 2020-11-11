@@ -5,23 +5,17 @@ class MobileMoneyBase < Base
     # method to handle mobile money charge response
     def handle_charge_response(response)
         charge_response = response
-        flwRef = charge_response["data"]["flwRef"]
-        txRef = charge_response["data"]["txRef"]
+        message = charge_response["message"]
+        charge_response_code = charge_response["data"]["code"]
         status = charge_response["data"]["status"]
-        amount = charge_response["data"]["amount"]
-        currency = charge_response["data"]["currency"]
-        payment_type = charge_response["data"]["paymentType"]
-        validate_instruction = charge_response["data"]["validateInstruction"]
-        auth_model_used = charge_response["data"]["authModelUsed"]
-        charge_response_code = charge_response["data"]["chargeResponseCode"]
-        charge_response_message = charge_response["data"]["chargeResponseMessage"]
-
+        ts = charge_response["data"]["ts"]
+        link = charge_response["data"]["link"]
 
         if charge_response_code == "00"
             res = {"error": false, "status": status, "validation_required": false, "txRef": txRef, "flwRef": flwRef, "amount": amount, "currency": currency, "validateInstruction": validate_instruction, "authModelUsed": auth_model_used, "paymentType": payment_type}
             return JSON.parse(res.to_json)
         else
-            res = {"error": false, "status": status, "validation_required": true, "txRef": txRef, "flwRef": flwRef, "amount": amount, "currency": currency, "validateInstruction": validate_instruction, "authModelUsed": auth_model_used, "paymentType": payment_type}
+            res = {"error": false, "status": status, "message": message, "ts": ts, "link": link}
             return JSON.parse(res.to_json)
         end
     end
