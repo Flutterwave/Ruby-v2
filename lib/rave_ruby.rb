@@ -17,7 +17,7 @@ require_relative "rave_ruby/rave_objects/sub_account"
 require_relative 'rave_ruby/error'
 
 
-  class RaveRuby
+class RaveRuby
       
       attr_accessor :public_key, :secret_key, :production, :url
 
@@ -54,7 +54,7 @@ require_relative 'rave_ruby/error'
           raise RaveBadKeyError, "No public key supplied and couldn't find any in environment variables. Make sure to set public key as an environment variable RAVE_PUBLIC_KEY"
         end
         # raise this error if invalid public key is passed
-        unless @public_key[0..7] == 'FLWPUBK-'
+        unless (@public_key[0..7] == 'FLWPUBK-' || @public_key[0..12] == 'FLWPUBK_TEST-')
           raise RaveBadKeyError, "Invalid public key #{@public_key}"
         end
         
@@ -63,7 +63,7 @@ require_relative 'rave_ruby/error'
           raise RaveBadKeyError, "No secret key supplied and couldn't find any in environment variables. Make sure to set secret key as an environment variable RAVE_SECRET_KEY"
         end
         # raise this error if invalid secret key is passed
-        unless @secret_key[0..7] == 'FLWSECK-'
+        unless (@secret_key[0..7] == 'FLWSECK-' || @secret_key[0..12] == 'FLWSECK_TEST-')
           raise RaveBadKeyError, "Invalid secret key #{@secret_key}"
         end
   end

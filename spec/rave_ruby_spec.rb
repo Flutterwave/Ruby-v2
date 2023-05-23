@@ -6,9 +6,14 @@ require 'spec_helper'
 invalid_test_public_key = "xxxxxxxxxxxxxxxxxxxxx-X" 
 invalid_test_secret_key = "xxxxxxxxxxxxxxxxxxxxx-X"
 
+test_mode_public_key = "FLWPUBK_TEST-xxxxxxxxxxxxxxxxxxxxx-X"
+test_mode_secret_key = "FLWSECK_TEST-xxxxxxxxxxxxxxxxxxxxx-X"
+
 RSpec.describe RaveRuby do
 
   rave = RaveRuby.new(test_public_key, test_secret_key)
+
+  test_mode_rave = RaveRuby.new(test_mode_public_key, test_mode_secret_key)
 
   # it "has a version number" do
   #   expect(RaveRuby::VERSION).not_to be nil
@@ -28,6 +33,14 @@ RSpec.describe RaveRuby do
 
   it "should return valid private key" do
     expect(rave.secret_key[0..7]).to eq("FLWSECK-")
+  end
+
+  it "should return valid test mode public key" do
+    expect(test_mode_rave.public_key[0..12]).to eq("FLWPUBK_TEST-")
+  end
+
+  it "should return valid test mode private key" do
+    expect(test_mode_rave.secret_key[0..12]).to eq("FLWSECK_TEST-")
   end
 
   it 'should raise Error if invalid public key set' do
