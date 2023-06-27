@@ -6,12 +6,12 @@ require "rave_ruby/version"
 Gem::Specification.new do |spec|
   spec.name          = "rave_ruby"
   spec.version       = RaveRuby::VERSION
-  spec.authors       = ["MaestroJolly"]
-  spec.email         = ["jolaosoyusuf@gmail.com"]
+  spec.authors       = ["Iphytech"]
+  spec.email         = ["ifunanyaikemma@gmail.com"]
   spec.date        = '2019-01-19'
   spec.summary       = %q{Ruby Gem For Rave Payments By Flutterwave.}
   spec.description   = %q{This is the official Ruby Gem For Rave Payments which includes Card, Account, Transfer, Subaccount, Subscription, Mpesa, Ghana Mobile Money, Ussd, Payment Plans, and Transfer payment methods.}
-  spec.homepage      = "https://github.com/MaestroJolly/rave-ruby"
+  spec.homepage      = "https://github.com/Iphytech/rave-ruby"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
