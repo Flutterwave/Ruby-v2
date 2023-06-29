@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/MaestroJolly/rave-ruby.svg?branch=master)](https://travis-ci.org/MaestroJolly/rave-ruby) [![Gem Version](https://badge.fury.io/rb/rave_ruby.svg)](https://badge.fury.io/rb/rave_ruby)
 
-This is a ruby gem for easy integration of Rave API for various applications written in ruby language from [Rave](https://rave.flutterwave.com) by [Flutterwave.](https://developer.flutterwave.com/reference)
+This is a Ruby gem for easy integration of Rave API for various applications written in Ruby language from [Rave](https://rave.flutterwave.com) by [Flutterwave.](https://developer.flutterwave.com/reference)
 
 ## Documentation
 
@@ -30,7 +30,7 @@ Or install it yourself as:
 
 #### Instantiate rave object in sandbox with environment variable:
 
-To use [Rave](https://ravesandbox.flutterwave.com), you need to instantiate the RaveRuby class with your [API](https://ravesandbox.flutterwave.com/dashboard/settings/apis) keys which are your public and secret keys. We recommend that you store your API keys in your environment variable named `RAVE_PUBLIC_KEY` and `RAVE_SECRET_KEY`. Instantiating your rave object after adding your API keys in your environment is as illustrated below:
+To use [Rave](https://ravesandbox.flutterwave.com), you need to instantiate the `RaveRuby` class with your [API](https://ravesandbox.flutterwave.com/dashboard/settings/apis) keys which are your public and secret keys. We recommend that you store your API keys in your environment variable named `RAVE_PUBLIC_KEY` and `RAVE_SECRET_KEY`. Instantiating your rave object after adding your API keys in your environment is as illustrated below:
 
 ```ruby
 rave = RaveRuby.new
@@ -45,7 +45,7 @@ You can instantiate your rave object by setting your public and secret keys by p
 rave = RaveRuby.new("YOUR_RAVE_SANDBOX_PUBLIC_KEY", "YOUR_RAVE_SANDBOX_SECRET_KEY")
 ```
 
-#### `NOTE:` It is best practice to always set your API keys to your environment variable for security purpose. Please be warned not use this package without setting your API keys in your environment variables in production.
+#### NOTE: It is best practice to always set your API keys to your environment variable for security purpose. Please be warned not use this package without setting your API keys in your environment variables in production.
 
 #### To instantiate rave object in production with environment variable:
 
@@ -83,7 +83,7 @@ Its functions includes:
 
 ### `.initiate_charge(payload)`
 
-This function is called to initiate account transaction. The payload should be a ruby hash with account details. Its parameters should include the following:
+This function is called to initiate account transaction. The payload should be a Ruby hash with account details. Its parameters should include the following:
 
 - `accountbank`,
 
@@ -99,21 +99,22 @@ This function is called to initiate account transaction. The payload should be a
 
 You can also add your custom transaction reference `(txRef)`, if not, one would be automatically generated for you in which we used the ruby `securerandom` module for generating this in the `Util` module.
 
-#### Sample account charge call:
+#### Sample `account charge` call:
 
 ```ruby
 response = charge_account.initiate_charge(payload)
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
     "error"=>false, "status"=>"success", "validation_required"=>true, "message"=>"V-COMP", "suggested_auth"=>nil, "txRef"=>"MC-2232eed54ca72f8ae2125f49020fb592", "flwRef"=>"ACHG-1544908923260", "chargeResponseCode"=>"02", "chargeResponseMessage"=>"Pending OTP validation", "amount"=>100, "currency"=>"NGN", "validateInstruction"=>"Please dial *901*4*1# to get your OTP. Enter the OTP gotten in the field below", "paymentType"=>"account", "authModelUsed"=>"AUTH", "authurl"=>"NO-URL"
 }
-
 ```
+
 A `RaveServerError` is raised if there's an error with the charge.
 
 #### Sample error response if an exception is raised:
@@ -122,7 +123,6 @@ A `RaveServerError` is raised if there's an error with the charge.
 {
     "status":"error","message":"Sorry that account number is invalid. Please check and try again","data":{"code":"FLW_ERR","message":"Sorry that account number is invalid. Please check and try again","err_tx":{"id":360210,"flwRef":"ACHG-1544910130710","chargeResponseCode":"RR","chargeResponseMessage":"Sorry that account number is invalid. Please check and try again","status":"failed","merchantbearsfee":1,"appfee":"1.4","merchantfee":"0","charged_amount":"100.00"
 }}}
-
 ```
 
 ### `.validate_charge(flwRef, "OTP")`
@@ -137,7 +137,7 @@ authurl = response['authurl']
 
 If validation is required by OTP, you need to pass the `flwRef` from the response of the charge call as well as the OTP.
 
-#### Sample validate_charge call is:
+#### Sample `validate_charge` call:
 
 ```ruby
 response = charge_account.validate_charge(response["flwRef"], "12345")
@@ -145,7 +145,7 @@ response = charge_account.validate_charge(response["flwRef"], "12345")
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef` and `flwRef` amongst its successful response:
+It returns this response in Ruby hash with the `txRef` and `flwRef` amongst its successful response:
 
 ```ruby
 {
@@ -153,13 +153,14 @@ It returns this response in ruby hash with the `txRef` and `flwRef` amongst its 
 }
 ```
 
-If an error occurs during OTP validation, you will receive a response similiar to this:
+If an error occurs during OTP validation, you will receive a response similar to this:
 
 ```ruby
 {
     "error"=>true, "status"=>"success", "message"=>"Charge Complete", "txRef"=>"MC-4cd9b2e4a9a104f92273ce194993ab50", "flwRef"=>"ACHG-1544969082006", "amount"=>100, "currency"=>"NGN", "chargeResponseCode"=>"02", "chargeResponseMessage"=>"Pending OTP validation"
 }
 ```
+
 With `chargeResponseCode` still equals to `02` which means it didn't validate successfully and is till pending validation.
 
 Otherwise if validation is successful using OTP, you will receive a response similar to this:
@@ -176,7 +177,7 @@ With `chargeResponseCode` equals to `00` which means it validated successfully.
 
 You can call the `verify_charge` function to check if your transaction was completed successfully. To do this, you have to pass the transaction reference generated at the point of making your charge call. This is the txRef in the response parameter returned in any of the `initiate_charge` or `validate_charge` call.
 
-#### Sample verify_charge call:
+#### Sample `verify_charge` call:
 
 ```ruby
 response = charge_account.verify_charge(response["txRef"])
@@ -184,7 +185,7 @@ response = charge_account.verify_charge(response["txRef"])
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
+It returns this response in Ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
 
 Full sample response returned if a transaction is successfully verified:
 
@@ -204,12 +205,9 @@ If a transaction couldn't be verified successfully, `error` and `transaction_com
 require 'rave_ruby'
 
 # This is a rave object which is expecting public and secret keys
-
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
-
 # This is used to perform card charge
-
 payload = {
     "accountbank" => "044",
     "accountnumber" => "0690000033",
@@ -231,15 +229,13 @@ charge_account = Account.new(rave)
 response = charge_account.initiate_charge(payload)
 print response
 
-# perform validation if it is required
-
+# Perform validation if it is required
 if response["validation_required"]
     response = charge_account.validate_charge(response["flwRef"], "12345")
     print response
 end
 
-# verify charge
-
+# Verify charge
 response = charge_account.verify_charge(response["txRef"])
 print response
 ```
@@ -259,7 +255,7 @@ Its functions includes:
 
 ### `.initiate_charge(payload)`
 
-This function is called to initiate card transaction. The payload should be a ruby hash with card details. Its parameters should include the following:
+This function is called to initiate card transaction. The payload should be a Ruby hash with card details. Its parameters should include the following:
 
 - `cardno`,
 
@@ -283,22 +279,22 @@ This function is called to initiate card transaction. The payload should be a ru
 
 You can also add your custom transaction reference `(txRef)`, if not, one would be automatically generated for you in which we used the ruby `securerandom` module for generating this in the `Util` module.
 
-#### Sample card charge call:
+#### Sample `card charge` call:
 
 ```ruby
 response = charge_card.initiate_charge(payload)
 ```
+
 You need to make this initial charge call to get the suggested_auth for the transaction.
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
     "error"=>false, "status"=>"success", "validation_required"=>true, "message"=>"AUTH_SUGGESTION", "suggested_auth"=>"PIN", "txRef"=>nil, "flwRef"=>nil, "chargeResponseCode"=>nil, "chargeResponseMessage"=>nil, "amount"=>nil, "currency"=>nil, "validateInstruction"=>nil, "paymentType"=>nil, "authModelUsed"=>nil, "authurl"=>nil
 }
-
 ```
 
 A `RaveServerError` is raised if there's an error with the card charge.
@@ -310,7 +306,6 @@ A `RaveServerError` is raised if there's an error with the card charge.
     "status":"error","message":"Card number is invalid","data":{"code":"ERR","message":"Card number is invalid"
     }
 }
-
 ```
 
 ### `.update_payload(suggested_auth, payload, pin or address)`
@@ -319,9 +314,9 @@ You need to update the payload with `pin` or `address` parameters depending on t
 
 If the `suggested_auth` returned is `pin`, update the payload with this method `charge_card.update_payload(suggested_auth, payload, pin: "CUSTOMER CARD PIN")`. 
 
-If the `suggested_auth` returned is `address`, update the payload with this method `charge_card.update_payload(suggested_auth, payload, address:{"A RUBY HASH OF CUSTOMER'S BILLING ADDRESS"})`. 
+If the `suggested_auth` returned is `address`, update the payload with this method `charge_card.update_payload(suggested_auth, payload, address:{"A Ruby hash OF CUSTOMER'S BILLING ADDRESS"})`. 
 
-This is what the ruby hash billing address consists:
+This is what the Ruby hash billing address consists:
 
 - `billingzip`,
 
@@ -337,7 +332,6 @@ After updating the payload, you will need to make the `.initiate_charge` call ag
 
 ```ruby
 response = charge_card.initiate_charge(updated_payload)
-
 ```
 
 This is a sample response returned after updating payload with suggested_auth `pin`:
@@ -360,7 +354,7 @@ authurl = response['authurl']
 
 If validation is required by OTP, you need to pass the `flwRef` from the response of the charge call as well as the OTP.
 
-A sample validate_charge call is:
+A sample `validate_charge` call:
 
 ```ruby
 response = charge_card.validate_charge(response["flwRef"], "12345")
@@ -368,7 +362,7 @@ response = charge_card.validate_charge(response["flwRef"], "12345")
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef` and `flwRef` amongst its successful response:
+It returns this response in Ruby hash with the `txRef` and `flwRef` amongst its successful response:
 
 ```ruby
 {
@@ -383,6 +377,7 @@ If an error occurs during OTP validation, you will receive a response similiar t
     "error"=>true, "status"=>"success", "message"=>"Charge Complete", "txRef"=>"MC-155418209b1cf2812da3ceb57e541ef0", "flwRef"=>"FLW-MOCK-35167122c73ccdd8ee796b71042af101", "amount"=>100, "currency"=>"NGN", "chargeResponseCode"=>"02", "chargeResponseMessage"=>"Pending OTP validation"
 }
 ```
+
 With `chargeResponseCode` still equals to `02` which means it didn't validate successfully and is till pending validation.
 
 Otherwise if validation is successful using OTP, you will receive a response similar to this:
@@ -392,13 +387,14 @@ Otherwise if validation is successful using OTP, you will receive a response sim
     "error"=>false, "status"=>"success", "message"=>"Charge Complete", "txRef"=>"MC-eac8888322fa44343d1a3ed7c8025fde", "flwRef"=>"FLW-MOCK-01cb1be7b183cfdec0d5225316647378", "amount"=>10, "currency"=>"NGN", "chargeResponseCode"=>"00", "chargeResponseMessage"=>"Please enter the OTP sent to your mobile number 080****** and email te**@rave**.com"
 }
 ```
+
 With `chargeResponseCode` equals to `00` which means it validated successfully.
 
 ### `.verify_charge(txRef)`
 
 You can call the `verify_charge` function to check if your transaction was completed successfully. To do this, you have to pass the transaction reference generated at the point of making your charge call. This is the txRef in the response parameter returned in any of the `initiate_charge` or `validate_charge` call.
 
-#### Sample verify_charge call:
+#### Sample `verify_charge` call:
 
 ```ruby
 response = charge_card.verify_charge(response["txRef"])
@@ -406,7 +402,7 @@ response = charge_card.verify_charge(response["txRef"])
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
+It returns this response in Ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
 
 Full sample response returned if a transaction is successfully verified:
 
@@ -416,7 +412,7 @@ Full sample response returned if a transaction is successfully verified:
 }
 ```
 
-`NOTE:` You can tokenize a card after charging the card for the first time for subsequent transactions done with the card without having to send the card details everytime a transaction is done. The card token can be gotten from the `.verify_charge` response, here's how to get the card token from our sample verify response:
+NOTE: You can tokenize a card after charging the card for the first time for subsequent transactions done with the card without having to send the card details everytime a transaction is done. The card token can be gotten from the `.verify_charge` response, here's how to get the card token from our sample verify response:
 
 `response['card']['card_tokens']['embed_tokens']` which is similar to this: `flw-t1nf-75aa4a20695a54c1846e0e8bcae754ee-m03k`
 
@@ -440,7 +436,7 @@ This function is called to perform a charge a tokenized card. Its payload includ
 
 - `currency`
 
-#### Sample tokenized charge call:
+#### Sample `tokenized charge` call:
 
 ```ruby
 response = charge_card.tokenized_charge(payload)
@@ -448,7 +444,7 @@ response = charge_card.tokenized_charge(payload)
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -458,7 +454,7 @@ It returns this response in ruby hash. A sample response:
 ```
 You can now verify the transaction by calling the `.verify_charge` function to verify the transaction and get the full response of the transaction.
 
-#### Sample verify_charge call:
+#### Sample `verify_charge` call:
 
 ```ruby
 response = charge_card.verify_charge(response["txRef"])
@@ -466,7 +462,7 @@ response = charge_card.verify_charge(response["txRef"])
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
+It returns this response in Ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
 
 Full sample response returned if a transaction is successfully verified:
 
@@ -481,14 +477,12 @@ If a transaction couldn't be verified successfully, `error` and `transaction_com
 #### Full Card Transaction Flow:
 
 ```ruby
-
 require 'rave_ruby'
 
 # This is a rave object which is expecting public and secret keys
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
 # This is used to perform card charge
-
 payload = {
     "cardno" => "5438898014560229",
     "cvv" => "890",
@@ -511,7 +505,7 @@ charge_card = Card.new(rave)
 
 response = charge_card.initiate_charge(payload)
 
-# update payload with suggested auth
+# Update payload with suggested auth
 if response["suggested_auth"]
     suggested_auth = response["suggested_auth"]
     auth_arg = charge_card.get_auth_type(suggested_auth)
@@ -521,11 +515,11 @@ if response["suggested_auth"]
         updated_payload = charge_card.update_payload(suggested_auth, payload, address:{"billingzip"=> "07205", "billingcity"=> "Hillside", "billingaddress"=> "470 Mundet PI", "billingstate"=> "NJ", "billingcountry"=> "US"})
     end
 
-    #  perform the second charge after payload is updated with suggested auth
+    # Perform the second charge after payload is updated with suggested auth
     response = charge_card.initiate_charge(updated_payload)
     print response
 
-    # perform validation if it is required
+    # Perform validation if it is required
     if response["validation_required"]
         response = charge_card.validate_charge(response["flwRef"], "12345")
         print response
@@ -535,10 +529,9 @@ else
     print response
 end
 
-# verify charge
+# Verify charge
 response = charge_card.verify_charge(response["txRef"])
 print response
-
 ```
 
 ## `Preauth.new(rave)`
@@ -553,7 +546,7 @@ Its functions includes:
 - `.void`
 - `.verify_preauth`
 
-The payload should be a ruby hash containing card information. It should have the following parameters:
+The payload should be a Ruby hash containing card information. It should have the following parameters:
 
 - `token`,
 
@@ -573,31 +566,31 @@ The payload should be a ruby hash containing card information. It should have th
 
 - `currency`
 
-`NOTE:` You need to use the same email used when charging the card for the first time to successfully charge the card.
+NOTE: You need to use the same email used when charging the card for the first time to successfully charge the card.
 
 You can also add your custom transaction reference `(txRef)`, if not, one would be automatically generated for you in which we used the ruby `securerandom` module for generating this in the `Util` module.
 
-#### Sample preauth charge call:
+#### Sample `initiate_charge` call:
 
 ```ruby
 response = preauth.initiate_charge(payload)
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
     "error"=>false, "status"=>"pending-capture", "message"=>"Charge success", "validation_required"=>false, "txRef"=>"MC-0df3e7e6cd58b226d4ba2a3d03dd200b", "flwRef"=>"FLW-PREAUTH-M03K-abdc01e69aa424b9e1ac44987ec21ec3", "amount"=>1000, "currency"=>"NGN", "paymentType"=>"card"
 }
-
 ```
 
 ### `.capture(flwRef)`
 
 The capture method is called after the preauth card has been charged. It takes in the `flwRef` from the charge response and call optionally take in amount less than the original amount authorised on the card as displayed below.
 
-#### Sample capture call:
+#### Sample `capture` call:
 
 ```ruby
 response = preauth.capture(response["flwRef"], "30")
@@ -605,51 +598,47 @@ response = preauth.capture(response["flwRef"], "30")
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
     "error"=>false, "status"=>"successful", "message"=>"Capture complete", "validation_required"=>false, "txRef"=>"MC-0df3e7e6cd58b226d4ba2a3d03dd200b", "flwRef"=>"FLW-PREAUTH-M03K-abdc01e69aa424b9e1ac44987ec21ec3", "amount"=>30, "currency"=>"NGN", "chargeResponseCode"=>"00", "chargeResponseMessage"=>"Approved", "paymentType"=>"card"
 }
-
 ```
 
 ### `.refund(flwRef)`
 
 This is called to perform a `refund` of a preauth transaction.
 
-#### Sample refund call:
+#### Sample `refund` call:
 
 ```ruby
 response = preauth.refund(response["flwRef"])
-
 ```
 
 ### `.void(flwRef)`
 
 This is called to `void` a preauth transaction.
 
-#### Sample void call:
+#### Sample `void` call:
 
 ```ruby
 response = preauth.void(response["flwRef"])
-
 ```
 
 ### `.verify_preauth(txRef)`
 
 The verify_preauth method can be called after capture is successfully completed by passing the `txRef` from the `charge` or `capture` response as its argument as shown below.
 
-#### Sample verify_preauth call:
+#### Sample `verify_preauth` call:
 
 ```ruby
 response = preauth.verify_preauth(response["txRef"])
-
 ```
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -657,7 +646,6 @@ It returns this response in ruby hash. A sample response:
 REFERENCE", "paymenttype"=>"card", "paymentid"=>"861", "fraudstatus"=>"ok", "chargetype"=>"preauth", "createdday"=>2, "createddayname"=>"TUESDAY", "createdweek"=>52, "createdmonth"=>11, "createdmonthname"=>"DECEMBER", "createdquarter"=>4, "createdyear"=>2018, "createdyearisleap"=>false, "createddayispublicholiday"=>0, "createdhour"=>12, "createdminute"=>14, "createdpmam"=>"pm", "created"=>"2018-12-25T12:14:54.000Z", "customerid"=>51655, "custphone"=>"0902620185", "custnetworkprovider"=>"AIRTEL", "custname"=>"temi desola", "custemail"=>"user@gmail.com", "custemailprovider"=>"GMAIL", "custcreated"=>"2018-09-24T07:59:14.000Z", "accountid"=>6076, "acctbusinessname"=>"Simply Recharge", "acctcontactperson"=>"Jolaoso Yusuf", "acctcountry"=>"NG", "acctbearsfeeattransactiontime"=>1, "acctparent"=>1, "acctvpcmerchant"=>"N/A", "acctalias"=>nil, "acctisliveapproved"=>0, "orderref"=>nil, "paymentplan"=>nil, "paymentpage"=>nil, "raveref"=>nil, "amountsettledforthistransaction"=>30, "card"=>{"expirymonth"=>"09", "expiryyear"=>"19", "cardBIN"=>"543889", "last4digits"=>"0229", "brand"=>"MASHREQ BANK CREDITSTANDARD", "card_tokens"=>[{"embedtoken"=>"flw-t1nf-75aa4a20695a54c1846e0e8bcae754ee-m03k", "shortcode"=>"671c0", "expiry"=>"9999999999999"}], "type"=>"MASTERCARD", "life_time_token"=>"flw-t1nf-75aa4a20695a54c1846e0e8bcae754ee-m03k"}, "meta"=>[{"id"=>1259456, "metaname"=>"trxauthorizeid", "metavalue"=>"M03K-i0-8673be673b828e4b2863ef6d39d56cce", "createdAt"=>"2018-12-25T12:14:54.000Z", "updatedAt"=>"2018-12-25T12:14:54.000Z", "deletedAt"=>nil, "getpaidTransactionId"=>370365}, {"id"=>1259457, "metaname"=>"trxreference", "metavalue"=>"FLW-PREAUTH-M03K-abdc01e69aa424b9e1ac44987ec21ec3", "createdAt"=>"2018-12-25T12:14:54.000Z", "updatedAt"=>"2018-12-25T12:14:54.000Z", "deletedAt"=>nil, "getpaidTransactionId"=>370365}, {"id"=>1259458, "metaname"=>"old_amount", "metavalue"=>"1000", "createdAt"=>"2018-12-25T12:14:57.000Z", "updatedAt"=>"2018-12-25T12:14:57.000Z", "deletedAt"=>nil, "getpaidTransactionId"=>370365}, {"id"=>1259459, "metaname"=>"old_charged_amount", "metavalue"=>"1000", "createdAt"=>"2018-12-25T12:14:57.000Z", "updatedAt"=>"2018-12-25T12:14:57.000Z", "deletedAt"=>nil, "getpaidTransactionId"=>370365}, {"id"=>1259460, "metaname"=>"old_fee", "metavalue"=>"", "createdAt"=>"2018-12-25T12:14:57.000Z", "updatedAt"=>"2018-12-25T12:14:57.000Z", "deletedAt"=>nil, "getpaidTransactionId"=>370365}, {"id"=>1259461, "metaname"=>"old_merchant_fee",
 "metavalue"=>"0", "createdAt"=>"2018-12-25T12:14:57.000Z", "updatedAt"=>"2018-12-25T12:14:57.000Z", "deletedAt"=>nil, "getpaidTransactionId"=>370365}]}
 }
-
 ```
 
 #### Full Preauth Transaction Flow:
@@ -665,13 +653,10 @@ REFERENCE", "paymenttype"=>"card", "paymentid"=>"861", "fraudstatus"=>"ok", "cha
 ```ruby
 require 'rave_ruby'
 
-
 # This is a rave object which is expecting public and secret keys
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
-
 # This is the payload for preauth charge
-
 payload = {
     "token" => "flw-t1nf-75aa4a20695a54c1846e0e8bcae754ee-m03k",
     "country" => "NG",
@@ -682,7 +667,6 @@ payload = {
     "IP" => "190.233.222.1",
     "currency" => "NGN",
 }
-
 
 # Instantiate the preauth object
 preauth = Preauth.new(rave)
@@ -706,10 +690,7 @@ print response
 # Verify transaction
 response = preauth.verify_preauth(response["txRef"])
 print response
-
-
 ```
-
 
 ## `MobileMoney.new(rave)`
 
@@ -722,7 +703,7 @@ Its functions includes:
 
 ### `.initiate_charge(payload)`
 
-This function is called to initiate mobile money transaction. The payload should be a ruby hash with mobile money details. Its parameters should include the following:
+This function is called to initiate mobile money transaction. The payload should be a Ruby hash with mobile money details. Its parameters should include the following:
 
 - `amount`,
 
@@ -734,28 +715,26 @@ This function is called to initiate mobile money transaction. The payload should
 
 You can also add your custom transaction reference `(txRef)`, if not, one would be automatically generated for you in which we used the ruby `securerandom` module for generating this in the `Util` module.
 
-#### Sample mobile money charge call:
+#### Sample mobile money charge` call:
 
 ```ruby
 response = charge_mobile_money.initiate_charge(payload)
 ```
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
-
 {
     "error"=>false, "status"=>"success-pending-validation", "validation_required"=>true, "txRef"=>"MC-83d9405416ff2a7312d8e3d5fceb3d52", "flwRef"=>"flwm3s4m0c1545818908919", "amount"=>50, "currency"=>"GHS", "validateInstruction"=>nil, "authModelUsed"=>"MOBILEMONEY", "paymentType"=>"mobilemoneygh"
 }
-
 ```
 
 ### `.verify_charge(txRef)`
 
 You can call the `verify_charge` function to check if your transaction was completed successfully. To do this, you have to pass the transaction reference generated at the point of making your charge call. This is the txRef in the response parameter returned in any of the `initiate_charge` call.
 
-#### Sample verify_charge call:
+#### Sample `verify_charge` call:
 
 ```ruby
 response = charge_mobile_money.verify_charge(response["txRef"])
@@ -763,16 +742,14 @@ response = charge_mobile_money.verify_charge(response["txRef"])
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
+It returns this response in Ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
 
 Full sample response returned if a transaction is successfully verified:
 
 ```ruby
-
 {
     "error"=>false, "transaction_complete"=>true, "data"=>{"txid"=>371101, "txref"=>"MC-1c2a66b7bb6e55c254cad2a61b0ea47b", "flwref"=>"flwm3s4m0c1545824547181", "devicefingerprint"=>"N/A", "cycle"=>"one-time", "amount"=>50, "currency"=>"GHS", "chargedamount"=>50, "appfee"=>0.7, "merchantfee"=>0, "merchantbearsfee"=>1, "chargecode"=>"00", "chargemessage"=>"Pending Payment Validation", "authmodel"=>"MOBILEMONEY",
 "ip"=>"::ffff:10.37.131.195", "narration"=>"Simply Recharge", "status"=>"successful", "vbvcode"=>"N/A", "vbvmessage"=>"N/A", "authurl"=>"NO-URL", "acctcode"=>"00", "acctmessage"=>"Approved", "paymenttype"=>"mobilemoneygh", "paymentid"=>"N/A", "fraudstatus"=>"ok", "chargetype"=>"normal", "createdday"=>3, "createddayname"=>"WEDNESDAY", "createdweek"=>52, "createdmonth"=>11, "createdmonthname"=>"DECEMBER", "createdquarter"=>4, "createdyear"=>2018, "createdyearisleap"=>false, "createddayispublicholiday"=>0, "createdhour"=>11, "createdminute"=>42, "createdpmam"=>"am", "created"=>"2018-12-26T11:42:26.000Z", "customerid"=>59839, "custphone"=>"08082000503", "custnetworkprovider"=>"AIRTEL", "custname"=>"Anonymous Customer", "custemail"=>"cezojejaze@nyrmusic.com", "custemailprovider"=>"COMPANY EMAIL", "custcreated"=>"2018-11-01T17:26:40.000Z", "accountid"=>6076, "acctbusinessname"=>"Simply Recharge", "acctcontactperson"=>"Jolaoso Yusuf", "acctcountry"=>"NG", "acctbearsfeeattransactiontime"=>1, "acctparent"=>1, "acctvpcmerchant"=>"N/A", "acctalias"=>nil, "acctisliveapproved"=>0, "orderref"=>"URF_MMGH_1545824546523_5297935", "paymentplan"=>nil, "paymentpage"=>nil, "raveref"=>nil, "amountsettledforthistransaction"=>49.3, "meta"=>[]}
-
 }
 ```
 
@@ -781,16 +758,12 @@ If a transaction couldn't be verified successfully, `error` and `transaction_com
 #### Full Mobile Money Transaction Flow:
 
 ```ruby
-
 require 'rave_ruby'
-
 
 # This is a rave object which is expecting public and secret keys
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
-
 # This is used to perform mobile money charge
-
 payload = {
     "amount" => "50",
     "email" => "cezojejaze@nyrmusic.com",
@@ -811,7 +784,6 @@ print response
 response = charge_mobile_money.verify_charge(response["txRef"])
 
 print response
-
 ```
 
 ## `Mpesa.new(rave)`
@@ -825,7 +797,7 @@ Its functions includes:
 
 ### `.initiate_charge(payload)`
 
-This function is called to initiate mpesa transaction. The payload should be a ruby hash with mpesa details. Its parameters should include the following:
+This function is called to initiate mpesa transaction. The payload should be a Ruby hash with mpesa details. Its parameters should include the following:
 
 - `amount`,
 
@@ -836,28 +808,26 @@ This function is called to initiate mpesa transaction. The payload should be a r
 
 You can also add your custom transaction reference `(txRef)`, if not, one would be automatically generated for you in which we used the ruby `securerandom` module for generating this in the `Util` module.
 
-#### Sample mpesa charge call:
+#### Sample `mpesa charge` call:
 
 ```ruby
 response = charge_mpesa.initiate_charge(payload)
 ```
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
-
 {
     "error"=>false, "status"=>"pending", "validation_required"=>true, "txRef"=>"MC-0ad3251bcdde39b16c225e9fc46e992c", "flwRef"=>"8833703548", "amount"=>"100", "currency"=>"KES", "paymentType"=>"mpesa"
 }
-
 ```
 
 ### `.verify_charge(txRef)`
 
 You can call the `verify_charge` function to check if your transaction was completed successfully. To do this, you have to pass the transaction reference generated at the point of making your charge call. This is the txRef in the response parameter returned in any of the `initiate_charge` call.
 
-#### Sample verify_charge call:
+#### Sample `verify_charge` call:
 
 ```ruby
 response = charge_mpesa.verify_charge(response["txRef"])
@@ -865,12 +835,11 @@ response = charge_mpesa.verify_charge(response["txRef"])
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
+It returns this response in Ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
 
 Full sample response returned if a transaction is successfully verified:
 
 ```ruby
-
 {
     "error"=>false, "transaction_complete"=>true, "data"=>{"txid"=>372498, "txref"=>"MC-0ad3251bcdde39b16c225e9fc46e992c", "flwref"=>"8833703548", "devicefingerprint"=>"N/A", "cycle"=>"one-time", "amount"=>100, "currency"=>"KES", "chargedamount"=>100, "appfee"=>1.4, "merchantfee"=>0, "merchantbearsfee"=>0, "chargecode"=>"00", "chargemessage"=>nil, "authmodel"=>"VBVSECURECODE", "ip"=>"::ffff:10.43.205.176", "narration"=>"funds payment", "status"=>"successful", "vbvcode"=>"N/A", "vbvmessage"=>"N/A", "authurl"=>"N/A", "acctcode"=>"00", "acctmessage"=>"MPESA COMPLETED", "paymenttype"=>"mpesa", "paymentid"=>"N/A", "fraudstatus"=>"ok", "chargetype"=>"normal", "createdday"=>4, "createddayname"=>"THURSDAY", "createdweek"=>52, "createdmonth"=>11, "createdmonthname"=>"DECEMBER", "createdquarter"=>4, "createdyear"=>2018, "createdyearisleap"=>false, "createddayispublicholiday"=>0, "createdhour"=>18, "createdminute"=>50, "createdpmam"=>"pm", "created"=>"2018-12-27T18:50:51.000Z", "customerid"=>65231, "custphone"=>"0926420185", "custnetworkprovider"=>"UNKNOWN PROVIDER", "custname"=>"Anonymous customer", "custemail"=>"user@exampe.com", "custemailprovider"=>"COMPANY EMAIL", "custcreated"=>"2018-11-27T15:23:38.000Z", "accountid"=>6076, "acctbusinessname"=>"Simply Recharge", "acctcontactperson"=>"Jolaoso Yusuf", "acctcountry"=>"NG", "acctbearsfeeattransactiontime"=>1,
 "acctparent"=>1, "acctvpcmerchant"=>"N/A", "acctalias"=>nil, "acctisliveapproved"=>0, "orderref"=>"8833703548", "paymentplan"=>nil, "paymentpage"=>nil, "raveref"=>nil, "amountsettledforthistransaction"=>98.6, "meta"=>[{"id"=>1259900, "metaname"=>"MPESARESPONSE", "metavalue"=>"{\"billrefnumber\":\"8833703548\",\"transactionamount\":\"100.00\",\"transactionid\":372498,\"type\":\"mpesa\"}", "createdAt"=>"2018-12-27T18:50:56.000Z", "updatedAt"=>"2018-12-27T18:50:56.000Z", "deletedAt"=>nil, "getpaidTransactionId"=>372498}]}
@@ -882,16 +851,12 @@ If a transaction couldn't be verified successfully, `error` and `transaction_com
 #### Full Mpesa Transaction Flow:
 
 ```ruby
-
 require 'rave_ruby'
-
 
 # This is a rave object which is expecting public and secret keys
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
-
 # This is used to perform mpesa charge
-
 payload = {
     "amount" => "100",
     "phonenumber" => "0926420185",
@@ -911,7 +876,6 @@ print response
 response = charge_mpesa.verify_charge(response["txRef"])
 
 print response
-
 ```
 
 ## `SubAccount.new(rave)`
@@ -927,7 +891,7 @@ Its functions includes:
 
 ### `.create_subaccount(payload)`
 
-This function is called to initiate subaccount transaction. The payload should be a ruby hash with the subaccount details. Its parameters should include the following:
+This function is called to initiate subaccount transaction. The payload should be a Ruby hash with the subaccount details. Its parameters should include the following:
 
 - `account_bank`,
 
@@ -947,13 +911,13 @@ This function is called to initiate subaccount transaction. The payload should b
 
 - `split_value`,
 
-#### `NOTE:` 
+#### NOTE: 
 
 - split_type can be set as percentage or flat when set as percentage it means you want to take a percentage fee on all transactions, and vice versa for flat this means you want to take a flat fee on every transaction.
 
 - split_value can be a percentage value or flat value depending on what was set on split_type.
 
-#### Sample create_subaccount call:
+#### Sample `create_subaccount` call:
 
 ```ruby
 response = subaccount.create_subaccount(payload)
@@ -961,20 +925,19 @@ response = subaccount.create_subaccount(payload)
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
     "error"=>false, "id"=>350, "data"=>{"id"=>350, "account_number"=>"0690000033", "account_bank"=>"044", "business_name"=>"Test Stores", "fullname"=>"Bale Gary", "date_created"=>"2018-12-28T16:20:40.000Z", "meta"=>[{"metaname"=>"MarketplaceID", "metavalue"=>"ggs-920900"}], "account_id"=>14101, "split_ratio"=>1, "split_type"=>"flat", "split_value"=>3000, "subaccount_id"=>"RS_CC09B109AA8F0CA5D9CE067492C548DA", "bank_name"=>"ACCESS BANK NIGERIA", "country"=>"NG"}
 }
-
 ```
 
 ### `.list_subaccounts`
 
 This function is called to list all subaccounts under an account. The function can be initiated by calling it on a subaccount object.
 
-#### Sample list_subaccount call:
+#### Sample `list_subaccount` call:
 
 ```ruby
 response = subaccount.list_subaccounts
@@ -982,19 +945,17 @@ response = subaccount.list_subaccounts
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
-
 {"status"=>"success", "message"=>"SUBACCOUNT-EDITED", "data"=>{"id"=>1234, "account_number"=>"1234567890", "account_bank"=>"044", "business_name"=>"Test Stores", "fullname"=>"Bale Gary", "date_created"=>"2019-07-18T10:53:32.000Z", "meta"=>[{"metaname"=>"MarketplaceID", "metavalue"=>"ggs-920900"}], "account_id"=>65394, "split_ratio"=>1, "split_type"=>"flat", "split_value"=>3000, "subaccount_id"=>"RS_DB708DA61222E6ED845F63054A52FFAE", "bank_name"=>"ACCESS BANK NIGERIA", "country"=>"NG"}}
-
 ```
 
 ### `.fetch_subaccount(subaccount_id)`
 
 This function is used to fetch a subaccount details by taking in the subaccount id as its argument.
 
-#### Sample fetch_subaccount call:
+#### Sample `fetch_subaccount` call:
 
 ```ruby
 response = subaccount.fetch_subaccount("RS_CC09B109AA8F0CA5D9CE067492C548DA")
@@ -1002,7 +963,7 @@ response = subaccount.fetch_subaccount("RS_CC09B109AA8F0CA5D9CE067492C548DA")
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1014,7 +975,7 @@ It returns this response in ruby hash. A sample response:
 
 This function is used to delete a subaccount by taking in the subaccount id as its argument.
 
-#### Sample delete_subaccount call:
+#### Sample `delete_subaccount` call:
 
 ```ruby
 response = subaccount.delete_subaccount("RS_CC09B109AA8F0CA5D9CE067492C548DA")
@@ -1022,7 +983,7 @@ response = subaccount.delete_subaccount("RS_CC09B109AA8F0CA5D9CE067492C548DA")
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1034,7 +995,7 @@ It returns this response in ruby hash. A sample response:
 
 This function is used to update a subaccount by taking in the  id as its argument.
 
-#### Sample update_subaccount call:
+#### Sample `update_subaccount` call:
 
 ```ruby
 response = subaccount.update_subaccount("1234")
@@ -1042,7 +1003,7 @@ response = subaccount.update_subaccount("1234")
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1056,27 +1017,23 @@ value"=>"ggs-920900"}], "account_id"=>65394, "split_ratio"=>1, "split_type"=>"fl
 #### Full SubAccount Flow:
 
 ```ruby
-
 require 'rave_ruby'
-
 
 # This is a rave object which is expecting public and secret keys
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
-
 # This is the payload for sub account creation
-
 payload = {
-	"account_bank" => "044",
-	"account_number" => "0690000033",
-	"business_name" => "Test Stores",
-	"business_email" => "test@test.com",
-	"business_contact" => "john doe",
-	"business_contact_mobile" => "09083772",
-	"business_mobile" => "0188883882",
+    "account_bank" => "044",
+    "account_number" => "0690000033",
+    "business_name" => "Test Stores",
+    "business_email" => "test@test.com",
+    "business_contact" => "john doe",
+    "business_contact_mobile" => "09083772",
+    "business_mobile" => "0188883882",
     "split_type" => "flat",
     "split_value" => 3000,
-	"meta" => [{"metaname": "MarketplaceID", "metavalue": "ggs-920900"}]
+    "meta" => [{"metaname": "MarketplaceID", "metavalue": "ggs-920900"}]
 }
 
 # Instantiate the subaccount object
@@ -1097,7 +1054,6 @@ print response
 # This is used to delete a subaccount by taking in the subaccount id
 response = subaccount.delete_subaccount("RS_A59429B9C94C5A862F731711290B9ADD")
 print response
-
 ```
 
 ## `PaymentPlan.new(rave)`
@@ -1114,7 +1070,7 @@ Its functions includes:
 
 ### `.create_payment_plan(payload)`
 
-This function is called to initiate payment plan transaction. The payload should be a ruby hash with the payment plan details. Its parameters should include the following:
+This function is called to initiate payment plan transaction. The payload should be a Ruby hash with the payment plan details. Its parameters should include the following:
 
 - `amount`,
 
@@ -1124,7 +1080,7 @@ This function is called to initiate payment plan transaction. The payload should
 
 - `duration`,
 
-#### `NOTE:` 
+#### NOTE: 
 
 - amount: this is the amount for the plan
 
@@ -1145,13 +1101,13 @@ every 5 weeks;
 every 12 months;
 every 6 years;
 every x y (where x is a number and y is the period e.g. every 5 months)
-
 ```
+
 - duration: This is the frequency, it is numeric, e.g. if set to 5 and intervals is set to monthly you would be charged 5 months, and then the subscription stops.
 
 `If duration is not passed, any subscribed customer will be charged indefinitely.`
 
-#### Sample create_payment_plan call:
+#### Sample `create_payment_plan` call:
 
 ```ruby
 response = payment_plan.create_payment_plan(payload)
@@ -1159,21 +1115,20 @@ response = payment_plan.create_payment_plan(payload)
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
     "error"=>false, "data"=>{"id"=>1298, "name"=>"New Test Plan", "amount"=>1000, "interval"=>"monthly", "duration"=>5, "status"=>"active",
 "currency"=>"NGN", "plan_token"=>"rpp_9002500b0440b470f02c", "date_created"=>"2018-12-30T10:54:06.000Z"}
 }
-
 ```
 
 ### `.list_payment_plans`
 
 This function is called to list all payment plans under an account. The function can be initiated by calling it on a paymentplan object.
 
-#### Sample list_payment_plans call:
+#### Sample `list_payment_plans` call:
 
 ```ruby
 response = payment_plan.list_payment_plans
@@ -1181,7 +1136,7 @@ response = payment_plan.list_payment_plans
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1193,7 +1148,7 @@ It returns this response in ruby hash. A sample response:
 
 This function is used to fetch a payment plan details by taking in the payment plan id and payment plan name as its argument.
 
-#### Sample fetch_payment_plan call:
+#### Sample `fetch_payment_plan` call:
 
 ```ruby
 response = payment_plan.fetch_payment_plan("1298", "New Test Plan")
@@ -1201,7 +1156,7 @@ response = payment_plan.fetch_payment_plan("1298", "New Test Plan")
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1213,7 +1168,7 @@ It returns this response in ruby hash. A sample response:
 
 This function is used to edit a payment plan by taking in the the payment plan id and payment plan name as its argument.
 
-#### Sample edit_payment_plan call:
+#### Sample `edit_payment_plan` call:
 
 ```ruby
 
@@ -1222,7 +1177,7 @@ response = payment_plan.edit_payment_plan("1298", {"name" => "Updated Test Plan"
 
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1235,14 +1190,15 @@ It returns this response in ruby hash. A sample response:
 
 This function is used to cancel a payment plan by taking in the payment plan id as its argument.
 
-#### Sample cancel_payment_plan call:
+#### Sample `cancel_payment_plan` call:
 
 ```ruby
 response = payment_plan.cancel_payment_plan("1298")
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1253,14 +1209,12 @@ It returns this response in ruby hash. A sample response:
 #### Full PaymentPlan Flow:
 
 ```ruby
-
 require 'rave_ruby'
-
 
 # This is a rave object which is expecting public and secret keys
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
-# payment plan payload
+# Payment plan payload
 payload = {
     "amount" => 1000,
     "name" => "New Test Plan",
@@ -1268,28 +1222,26 @@ payload = {
     "duration" => 5
 }
 
-
-# create an instance of the payment plan object
+# Create an instance of the payment plan object
 payment_plan = PaymentPlan.new(rave)
 
-# method to create payment plan
+# Method to create payment plan
 # response = payment_plan.create_payment_plan(payload)
 # print response
 
-# # method to list all payment plan
+# Method to list all payment plan
 # response = payment_plan.list_payment_plans
 # print response
 
-# method to fetch payment plan
+# Method to fetch payment plan
 response = payment_plan.fetch_payment_plan("1298", "New Test Plan")
 print response
 
-
-# method to edit payment plan
+# Method to edit payment plan
 response = payment_plan.edit_payment_plan("1298", {"name" => "Updated Test Plan", "status" => "active"})
 print response
 
-# method to cancel payment plan
+# Method to cancel payment plan
 response = payment_plan.cancel_payment_plan("1298")
 print response
 
@@ -1309,14 +1261,15 @@ Its functions includes:
 
 This function is called to fetch and list all subscription.
 
-#### Sample list_all_subscription call:
+#### Sample `list_all_subscription` call:
 
 ```ruby
 response = subscription.list_all_subscription
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1330,14 +1283,15 @@ It returns this response in ruby hash. A sample response:
 
 This function is called to fetch a single subscription by taking the transaction id from a successful charge or verify response as its arguments.
 
-#### Sample fetch_subscription call:
+#### Sample `fetch_subscription` call:
 
 ```ruby
 response = subscription.fetch_subscription("426082")
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1349,14 +1303,14 @@ It returns this response in ruby hash. A sample response:
 
 This function is called to activate a subscription by taking the transaction id from a successful charge or verify response as its arguments.
 
-#### Sample activate_subscription call:
+#### Sample `activate_subscription` call:
 
 ```ruby
 response = subscription.activate_subscription(426082)
 ```
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1381,14 +1335,14 @@ It returns this response in ruby hash. A sample response:
 
 This function is called to cancel a subscription by taking the transaction id from a successful charge or verify response as its arguments.
 
-#### Sample cancel_subscription call:
+#### Sample `cancel_subscription` call:
 
 ```ruby
 response = subscription.cancel_subscription(426082)
 ```
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1443,7 +1397,7 @@ Its functions includes:
 
 ### `.initiate_transfer`
 
-This function is called to initiate a single transfer from one account to another. The payload should be a ruby hash with the beneficiary's account details. Its parameters should include the following:
+This function is called to initiate a single transfer from one account to another. The payload should be a Ruby hash with the beneficiary's account details. Its parameters should include the following:
 
 - `account_bank`,
 
@@ -1455,7 +1409,7 @@ This function is called to initiate a single transfer from one account to anothe
 
 - `currency`,
 
-#### `NOTE:` 
+#### NOTE: 
 
 For international transfers, you must pass a meta parameter as part of your payload as shown in the sample below:
 
@@ -1472,17 +1426,17 @@ For international transfers, you must pass a meta parameter as part of your payl
     }
 ]
 ```
-#### Sample initiate_transfer call:
+#### Sample `initiate_transfer` call:
 
 ```ruby
 response = transfer.initiate_transfer(payload)
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
-
 {
     "error"=>false, "id"=>4520, "data"=>{"id"=>4520, "account_number"=>"0690000044", "bank_code"=>"044", "fullname"=>"Mercedes Daniel", "date_created"=>"2019-01-02T08:07:26.000Z", "currency"=>"NGN", "amount"=>500, "fee"=>45, "status"=>"NEW", "reference"=>"MC-df53da98eb0d7475c9e33727dec09e78", "meta"=>nil, "narration"=>"New transfer", "complete_message"=>"", "requires_approval"=>0, "is_approved"=>1, "bank_name"=>"ACCESS BANK NIGERIA"}
 }
@@ -1490,27 +1444,27 @@ It returns this response in ruby hash. A sample response:
 
 ### `.bulk_transfer`
 
-This function is called to initiate a bulk transfer. The payload should be a ruby hash with the beneficiaries account details. Its parameters should include the following:
+This function is called to initiate a bulk transfer. The payload should be a Ruby hash with the beneficiaries account details. Its parameters should include the following:
 
 - `title`,
 
 - `bulk_data`,
 
-#### `NOTE:`
+#### NOTE:
 
-The bulk_data should consist of an array of the beneficiaries account details which includes `account_bank`, `account_number`, `amount`, `narration`, `currency`, `reference`.
+The `bulk_data` should consist of an array of the beneficiaries account details which includes `account_bank`, `account_number`, `amount`, `narration`, `currency`, `reference`.
 
-#### Sample bulk_transfer call:
+#### Sample `bulk_transfer` call:
 
 ```ruby
 response = transfer.bulk_transfer(payload)
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
-
 {
     "error"=>false, "status"=>"success", "message"=>"BULK-TRANSFER-CREATED", "id"=>765, "data"=>{"id"=>765, "date_created"=>"2019-01-02T08:20:20.000Z", "approver"=>"N/A"}
 }
@@ -1520,14 +1474,15 @@ It returns this response in ruby hash. A sample response:
 
 This function is called to get transfer rates for all Rave supported currencies. You may or may not pass in a currency as its argument. If you do not pass in a currency, all Rave supported currencies transfer rates will be returned.
 
-#### Sample get_fee call:
+#### Sample `get_fee` call:
 
 ```ruby
 response = transfer.get_fee(currency)
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1539,14 +1494,14 @@ It returns this response in ruby hash. A sample response:
 
 This function is called to get balance an account. You may or may not pass in a currency as its argument.
 
-#### Sample get_balance call:
+#### Sample `get_balance` call:
 
 ```ruby
 response = transfer.get_balance(currency)
 ```
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1558,14 +1513,14 @@ It returns this response in ruby hash. A sample response:
 
 This function is called to fetch a single transfer. It takes in transfer refernce as its argument.
 
-#### Sample fetch call:
+#### Sample `fetch` call:
 
 ```ruby
 response = transfer.fetch("Bulk Transfer 2")
 ```
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1577,14 +1532,14 @@ It returns this response in ruby hash. A sample response:
 
 This function is called to fetch all transfers.
 
-#### Sample fetch all transfers call:
+#### Sample `fetch_all_transfers` call:
 
 ```ruby
 response = transfer.fetch_all_transfers
 ```
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
 {
@@ -1601,7 +1556,6 @@ require 'rave_ruby'
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
 # This is used to initiate single transfer
-
 payload = {
     "account_bank" => "044",
     "account_number" => "0690000044",
@@ -1615,8 +1569,7 @@ transfer = Transfer.new(rave)
 response = transfer.initiate_transfer(payload)
 print response
 
-
-# # This is used to send bulk transfer
+# This is used to send bulk transfer
 
 # payload = {
 #     "title" => "test",
@@ -1674,7 +1627,7 @@ Its functions includes:
 
 ### `.initiate_charge(payload)`
 
-This function is called to initiate uganda mobile money transaction. The payload should be a ruby hash with uganda mobile money details. Its parameters should include the following:
+This function is called to initiate uganda mobile money transaction. The payload should be a Ruby hash with uganda mobile money details. Its parameters should include the following:
 
 - `amount`,
 
@@ -1686,28 +1639,27 @@ This function is called to initiate uganda mobile money transaction. The payload
 
 You can also add your custom transaction reference `(txRef)`, if not, one would be automatically generated for you in which we used the ruby `securerandom` module for generating this in the `Util` module.
 
-#### Sample uganda mobile money charge call:
+#### Sample `initiate_charge` call:
 
 ```ruby
 response = charge_uganda_mobile_money.initiate_charge(payload)
 ```
+
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
-
 {
     "error"=>false, "status"=>"success-pending-validation", "validation_required"=>true, "txRef"=>"MC-c716f37ff7c0f719c5976aaf239e11e1", "flwRef"=>"flwm3s4m0c1546503628014", "amount"=>30, "currency"=>"UGX", "validateInstruction"=>nil, "authModelUsed"=>"MOBILEMONEY", "paymentType"=>"mobilemoneygh"
 }
-
 ```
 
 ### `.verify_charge(txRef)`
 
 You can call the `verify_charge` function to check if your transaction was completed successfully. To do this, you have to pass the transaction reference generated at the point of making your charge call. This is the txRef in the response parameter returned in any of the `initiate_charge` call.
 
-#### Sample verify_charge call:
+#### Sample `verify_charge` call:
 
 ```ruby
 response = charge_uganda_mobile_money.verify_charge(response["txRef"])
@@ -1715,7 +1667,7 @@ response = charge_uganda_mobile_money.verify_charge(response["txRef"])
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
+It returns this response in Ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
 
 Full sample response returned if a transaction is successfully verified:
 
@@ -1731,16 +1683,12 @@ If the `chargecode` returned is `02`, it means the transaction is still pending 
 #### Full Uganda Mobile Money Transaction Flow:
 
 ```ruby
-
 require 'rave_ruby'
-
 
 # This is a rave object which is expecting public and secret keys
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
-
 # This is used to perform mobile money charge
-
 payload = {
     "amount" => "30",
     "phonenumber" => "054709929300",
@@ -1763,7 +1711,6 @@ print response
 response = charge_uganda_mobile_money.verify_charge(response["txRef"])
 
 print response
-
 ```
 
 ## `ZambiaMobileMoney.new(rave)`
@@ -1777,7 +1724,7 @@ Its functions includes:
 
 ### `.initiate_charge(payload)`
 
-This function is called to initiate zambia mobile money transaction. The payload should be a ruby hash with uganda mobile money details. Its parameters should include the following:
+This function is called to initiate zambia mobile money transaction. The payload should be a Ruby hash with uganda mobile money details. Its parameters should include the following:
 
 - `amount`,
 
@@ -1789,28 +1736,26 @@ This function is called to initiate zambia mobile money transaction. The payload
 
 You can also add your custom transaction reference `(txRef)`, if not, one would be automatically generated for you in which we used the ruby `securerandom` module for generating this in the `Util` module.
 
-#### Sample zambia mobile money charge call:
+#### Sample `initiate_charge` call:
 
 ```ruby
 response = charge_zambia_mobile_money.initiate_charge(payload)
 ```
 #### which returns:
 
-It returns this response in ruby hash. A sample response:
+It returns this response in Ruby hash. A sample response:
 
 ```ruby
-
 {
     "error"=>false, "status"=>"success-pending-validation", "validation_required"=>true, "txRef"=>"MC-bed3093128cd133623ad3cc7cbfc22b2", "flwRef"=>"flwm3s4m0c1549542975743", "amount"=>30, "currency"=>"ZMW", "validateInstruction"=>nil, "authModelUsed"=>"MOBILEMONEY", "paymentType"=>"mobilemoneyzm"
 }
-
 ```
 
 ### `.verify_charge(txRef)`
 
 You can call the `verify_charge` function to check if your transaction was completed successfully. To do this, you have to pass the transaction reference generated at the point of making your charge call. This is the txRef in the response parameter returned in any of the `initiate_charge` call.
 
-#### Sample verify_charge call:
+#### Sample `verify_charge` call:
 
 ```ruby
 response = charge_zambia_mobile_money.verify_charge(response["txRef"])
@@ -1818,7 +1763,7 @@ response = charge_zambia_mobile_money.verify_charge(response["txRef"])
 
 #### which returns:
 
-It returns this response in ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
+It returns this response in Ruby hash with the `txRef`, `flwRef` and `transaction_complete` which indicates the transaction is successfully completed.
 
 Full sample response returned if a transaction is successfully verified:
 
@@ -1834,16 +1779,12 @@ If the `chargecode` returned is `02`, it means the transaction is still pending 
 #### Full Zambia Mobile Money Transaction Flow:
 
 ```ruby
-
 require 'rave_ruby'
-
 
 # This is a rave object which is expecting public and secret keys
 rave = RaveRuby.new("FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X", "FLWSECK-xxxxxxxxxxxxxxxxxxxx-X")
 
-
 # This is used to perform zambia mobile money charge
-
 payload = {
     "amount" => "30",
     "phonenumber" => "054709929300",
@@ -1866,12 +1807,11 @@ print response
 response = charge_zambia_mobile_money.verify_charge(response["txRef"])
 
 print response
-
 ```
 
 ## `Ussd.new(rave)`
 
-`NOTE:` This option is currently unavailable.
+NOTE: This option is currently unavailable.
 
 ## `ListBanks.new(rave)`
 
