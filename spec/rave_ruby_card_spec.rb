@@ -2,8 +2,9 @@ require 'spec_helper'
 require "rave_ruby/rave_objects/card"
 
 
-# test_public_key = "FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X" 
+# test_public_key = "FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X"
 # test_secret_key = "FLWSECK-xxxxxxxxxxxxxxxxxxxxx-X"
+# test_encryption_key = "FLW-XXXXXXXXXXXXXXXXXX-X"
 
 payload = {
   "cardno" => "5438898014560229",
@@ -104,10 +105,10 @@ avs_payload = {
   "meta" => [{"metaname": "flightID", "metavalue": "123949494DC"}],
   "redirect_url" => "https://rave-webhook.herokuapp.com/receivepayment",
   "device_fingerprint" => "69e6b7f0b72037aa8428b70fbe03986c",
-  "billingzip"=> "07205", 
-  "billingcity"=> "Hillside", 
-  "billingaddress"=> "470 Mundet PI", 
-  "billingstate"=> "NJ", 
+  "billingzip"=> "07205",
+  "billingcity"=> "Hillside",
+  "billingaddress"=> "470 Mundet PI",
+  "billingstate"=> "NJ",
   "billingcountry"=> "US"
 }
 
@@ -136,7 +137,7 @@ RSpec.describe Card do
         expect(e.instance_of? IncompleteParameterError).to eq true
       end
     end
-  
+
     it 'should check if authentication is required after charging a card' do
       first_payload_response = charge_card.initiate_charge(payload)
       expect(first_payload_response["suggested_auth"].nil?).to eq(false)
@@ -172,5 +173,5 @@ RSpec.describe Card do
     end
 
   end
-  
+
 end
