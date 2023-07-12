@@ -1,3 +1,3 @@
-module RaveRuby
-  VERSION = "0.1.2"
+class RaveRuby
+  VERSION = "0.1.3"
 end

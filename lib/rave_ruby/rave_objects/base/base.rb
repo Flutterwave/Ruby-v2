@@ -86,7 +86,7 @@ class Base
       if !passed_params.key?(k)
         raise IncompleteParameterError, "Parameters Incomplete, Missing Parameter: #{k}, Please pass in the complete parameter."
       end
-      return true
+      # return true
     end
   end
 

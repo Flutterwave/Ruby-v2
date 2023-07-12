@@ -16,8 +16,21 @@ class UssdBase < Base
         charge_response_message = charge_response["data"]["chargeResponseMessage"]
         validation_instruction = charge_response["data"]["validateInstructions"]
 
+        # new response structure
+        provider = charge_response["data"]["data"]["provider"]
+        provider_status = charge_response["data"]["data"]["status"]
+        provider_amount = charge_response["data"]["data"]["amount"]
+        provider_payment_code = charge_response["data"]["data"]["payment_code"]
+        provider_note = charge_response["data"]["data"]["note"]
+        provider_transaction_date = charge_response["data"]["data"]["transaction_date"]
+        provider_transaction_reference = charge_response["data"]["data"]["transactionreference"]
+        meta_data = charge_response["data"]["data"]["meta_data"]
+        flw_reference = charge_response["data"]["data"]["flw_reference"]
+        provider_response = charge_response["data"]["response_message"]
+        provider_response_code = charge_response["data"]["response_code"]
+
         bank_list = {"gtb" => "058", "zenith" => "057"}
-        gtb_response_text = "To complete this transaction, please dial *737*50*#{charged_amount.ceil}*159#"
+        gtb_response_text = "To complete this transaction, please dial *737*50*#{charged_amount}*159#"
 
 
         if charge_response_code == "02"
@@ -28,6 +41,11 @@ class UssdBase < Base
                 res = {"error": false, "status": status, "validation_required": true, "txRef": txRef, "flwRef": flwRef, "validateInstruction": validation_instruction, "amount": amount, "currency": currency, "paymentType": payment_type}
                 return JSON.parse(res.to_json)
             end
+
+        elsif provider_response_code == "02"
+            res = {"error": false, "status": provider_status, "validation_required": true, "txRef": provider_transaction_reference, "flwRef": flw_reference, "note": provider_note, "amount": provider_amount, "provider": provider, "paymentCode": provider_payment_code, "meta": meta_data, "provider_response": provider_response}
+            return JSON.parse(res.to_json)
+
         else
             res = {"error": false, "status": status, "validation_required": false, "txRef": txRef, "flwRef": flwRef, "amount": amount, "currency": currency, "paymentType": payment_type}
             return JSON.parse(res.to_json)

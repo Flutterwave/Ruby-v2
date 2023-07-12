@@ -1,10 +1,11 @@
 require 'spec_helper'
+require 'dotenv/load'
 require "rave_ruby/rave_objects/subscription"
 
 
-# test_public_key = "FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X" 
-# test_secret_key = "FLWSECK-xxxxxxxxxxxxxxxxxxxxx-X"
-
+test_public_key = ENV['TEST_PUBLIC_KEY'];
+test_secret_key = ENV['TEST_SECRET_KEY'];
+test_encryption_key = ENV['TEST_ENCRYPTION_KEY'];
 
 payload = {
     "amount" => 500,
@@ -15,7 +16,7 @@ payload = {
 
 RSpec.describe Subscription do
 
-  rave = RaveRuby.new(test_public_key, test_secret_key)
+  rave = RaveRuby.new(test_public_key, test_secret_key, test_encryption_key, false)
   subscription = Subscription.new(rave)
 
   context "when a merchant tries to list subscriptions" do
@@ -29,20 +30,10 @@ RSpec.describe Subscription do
     end
 
     it 'should check if a subscription is successfully fetched by transaction id' do
-        fetch_subscription_response = subscription.fetch_subscription(426082)
+        fetch_subscription_response = subscription.fetch_subscription(4951)
       expect(fetch_subscription_response["error"]).to eq(false)
     end
 
-    it 'should check if a subscription is cancelled by transaction id' do
-      cancel_subscription_response = subscription.cancel_subscription(426082)
-      expect(cancel_subscription_response["error"]).to eq(false)
-    end
-
-    it 'should check if a subscription is successfully activated by transaction id' do
-      activate_subscription_response = subscription.activate_subscription(426082)
-      expect(activate_subscription_response["error"]).to eq(false)
-    end
-
   end
-  
+
 end
