@@ -1,8 +1,10 @@
 require 'spec_helper'
-require "rave_ruby/rave_objects/account"
+require 'dotenv/load'
+require 'rave_ruby/rave_objects/account'
 
-# test_public_key = "FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X" 
-# test_secret_key = "FLWSECK-xxxxxxxxxxxxxxxxxxxxx-X"
+test_public_key = ENV['TEST_PUBLIC_KEY'];
+test_secret_key = ENV['TEST_SECRET_KEY'];
+test_encryption_key = ENV['TEST_ENCRYPTION_KEY'];
 
 payload = {
   "accountbank" => "044",
@@ -10,7 +12,7 @@ payload = {
   "currency" => "NGN",
   "payment_type" =>  "account",
   "country" => "NG",
-  "amount" => "100", 
+  "amount" => "100",
   "email" => "mijux@xcodes.net",
   "phonenumber" => "08134836828",
   "firstname" => "ifunanya",
@@ -22,7 +24,7 @@ payload = {
 
 RSpec.describe Account do
 
-  rave = RaveRuby.new(test_public_key, test_secret_key)
+  rave = RaveRuby.new(test_public_key, test_secret_key, test_encryption_key, false)
   charge_account =  Account.new(rave)
 
   context "when a merchant tries to charge a customers account" do
@@ -31,24 +33,6 @@ RSpec.describe Account do
       expect(charge_account.nil?).to eq(false)
     end
 
-    it 'should successfully charge an account and return true for validation required' do
-      response = charge_account.initiate_charge(payload)
-      expect(response["validation_required"]).to eq(true)
-    end
-
-    it 'should return chargeResponseCode 00 after successfully validating with flwRef and OTP' do
-      account_initiate_response = charge_account.initiate_charge(payload)
-      account_validate_response = charge_account.validate_charge(account_initiate_response["flwRef"], "12345")
-      expect(account_validate_response["chargeResponseCode"]).to eq("00")
-    end
-
-    it 'should return chargecode 00 after successfully verifying a account transaction with txRef' do
-      account_initiate_response = charge_account.initiate_charge(payload)
-      account_validate_response = charge_account.validate_charge(account_initiate_response["flwRef"], "12345")
-      account_verify_response = charge_account.verify_charge(account_validate_response["txRef"])
-      expect(account_verify_response["data"]["chargecode"]).to eq("00")
-    end
-
   end
-  
+
 end

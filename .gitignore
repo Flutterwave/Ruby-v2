@@ -54,4 +54,8 @@ build-iPhoneSimulator/
 .lib/mobile_money_gh.rb
 sample_code/
 mobile_money_gh.rb
+/sample_code
+.env
+
+
 

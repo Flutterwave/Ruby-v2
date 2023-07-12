@@ -8,7 +8,7 @@ class Preauth < PreauthBase
 
         base_url = rave_object.base_url
         secret_key = rave_object.secret_key.dup
-        hashed_secret_key = get_hashed_key
+        encryption_key = rave_object.encryption_key
         public_key = rave_object.public_key
 
         required_parameters = ["country", "amount", "currency", "email"]
@@ -26,10 +26,10 @@ class Preauth < PreauthBase
         if data.key?("token")
             data.merge!({"SECKEY" => secret_key})
             payload = data.to_json
-            response = post_request("#{base_url}#{BASE_ENDPOINTS::PREAUTH_CHARGE_ENDPOINT}", payload) 
+            response = post_request("#{base_url}#{BASE_ENDPOINTS::PREAUTH_CHARGE_ENDPOINT}", payload)
             return handle_charge_response(response)
         else
-            encrypt_data = Util.encrypt(hashed_secret_key, data)
+            encrypt_data = Util.encrypt(encryption_key, data)
 
             payload = {
                 "PBFPubKey" => public_key,
@@ -39,8 +39,8 @@ class Preauth < PreauthBase
 
             payload = payload.to_json
 
-            response = post_request("#{base_url}#{BASE_ENDPOINTS::CHARGE_ENDPOINT}", payload) 
-
+            response = post_request("#{base_url}#{BASE_ENDPOINTS::CHARGE_ENDPOINT}", payload)
+puts response
             return handle_charge_response(response)
         end
     end
