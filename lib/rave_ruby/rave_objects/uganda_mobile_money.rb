@@ -6,7 +6,7 @@ class UgandaMobileMoney < MobileMoneyBase
     def initiate_charge(data)
 
         base_url = rave_object.base_url
-        hashed_secret_key = get_hashed_key
+        encryption_key = rave_object.encryption_key
         public_key = rave_object.public_key
 
 
@@ -25,7 +25,7 @@ class UgandaMobileMoney < MobileMoneyBase
         required_parameters = ["amount", "email", "phonenumber", "network", "IP"]
         check_passed_parameters(required_parameters, data)
 
-        encrypt_data = Util.encrypt(hashed_secret_key, data)
+        encrypt_data = Util.encrypt(encryption_key, data)
 
         payload = {
             "PBFPubKey" => public_key,
@@ -34,7 +34,7 @@ class UgandaMobileMoney < MobileMoneyBase
         }
 
         payload = payload.to_json
-        response = post_request("#{base_url}#{BASE_ENDPOINTS::CHARGE_ENDPOINT}", payload) 
+        response = post_request("#{base_url}#{BASE_ENDPOINTS::CHARGE_ENDPOINT}", payload)
 
         return handle_charge_response(response)
 

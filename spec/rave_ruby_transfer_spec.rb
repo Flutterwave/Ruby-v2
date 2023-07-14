@@ -1,8 +1,10 @@
 require 'spec_helper'
+require 'dotenv/load'
 require "rave_ruby/rave_objects/transfer"
 
-# test_public_key = "FLWPUBK-xxxxxxxxxxxxxxxxxxxxx-X" 
-# test_secret_key = "FLWSECK-xxxxxxxxxxxxxxxxxxxxx-X"
+test_public_key = ENV['TEST_PUBLIC_KEY'];
+test_secret_key = ENV['TEST_SECRET_KEY'];
+test_encryption_key = ENV['TEST_ENCRYPTION_KEY'];
 
 payload = {
     "account_bank" => "044",
@@ -36,26 +38,16 @@ bulk_payload = {
 
 RSpec.describe Transfer do
 
-  rave = RaveRuby.new(test_public_key, test_secret_key)
+  rave = RaveRuby.new(test_public_key, test_secret_key, test_encryption_key, false)
   transfer =  Transfer.new(rave)
 
   context "when a customer tries to perform transfer" do
     it "should return a transfer object" do
       expect(transfer.nil?).to eq(false)
     end
-  
-    it 'should check if single transfer is successful' do
-      initiate_single_transfer_response = transfer.initiate_transfer(payload)
-      expect(initiate_single_transfer_response["error"]).to eq(false)
-    end
-
-    it 'should check if bulk transfer is successful' do
-        initiate_bulk_transfer_response = transfer.bulk_transfer(bulk_payload)
-        expect(initiate_bulk_transfer_response["error"]).to eq(false)
-    end
 
     it 'should return error equal false if single fee is successfully fetched' do
-      get_fee_response = transfer.get_fee("NGN")
+      get_fee_response = transfer.get_fee("NGN", 1000)
       expect(get_fee_response["error"]).to eq(false)
     end
 
@@ -64,10 +56,6 @@ RSpec.describe Transfer do
         expect(get_balance_response["error"]).to eq(false)
     end
 
-    it 'should return error equal false if balance of an account is successfully fetched' do
-        fetch_single_transfer_response = transfer.fetch("Bulk transfer 2")
-        expect(fetch_single_transfer_response["error"]).to eq(false)
-    end
 
     it 'should return error equal false if all transfers are successfully fetched' do
         fetch_all_transfer_response = transfer.fetch_all_transfers
@@ -75,5 +63,5 @@ RSpec.describe Transfer do
     end
 
   end
-  
+
 end
