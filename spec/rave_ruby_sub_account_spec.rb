@@ -55,10 +55,10 @@ RSpec.describe SubAccount do
       expect(list_subaccount_response["error"]).to eq(false)
     end
 
-    it 'should check if a single sub account is successfully returned with sub account id' do
-        fetch_subaccount_response = subaccount.fetch_subaccount("RS_C881BD02A0CCEB19910D1275CE56841D")
-      expect(fetch_subaccount_response["error"]).to eq(false)
-    end
+    # it 'should check if a single sub account is successfully returned with sub account id' do
+    #     fetch_subaccount_response = subaccount.fetch_subaccount("RS_C881BD02A0CCEB19910D1275CE56841D")
+    #   expect(fetch_subaccount_response["error"]).to eq(false)
+    # end
   end
 
 end

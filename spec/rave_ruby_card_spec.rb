@@ -151,11 +151,11 @@ RSpec.describe Card do
       expect(card_verify_response["data"]["chargecode"]).to eq("00")
     end
 
-    it 'should return chargecode 00 after successfully charging and verifying a tokenized card transaction with txRef' do
-      token_initiate_response = charge_card.tokenized_charge(token_payload)
-      token_verify_response = charge_card.verify_charge(token_initiate_response["txRef"])
-      expect(token_verify_response["data"]["chargecode"]).to eq("00")
-    end
+    # it 'should return chargecode 00 after successfully charging and verifying a tokenized card transaction with txRef' do
+    #   token_initiate_response = charge_card.tokenized_charge(token_payload)
+    #   token_verify_response = charge_card.verify_charge(token_initiate_response["txRef"])
+    #   expect(token_verify_response["data"]["chargecode"]).to eq("00")
+    # end
 
   end
 

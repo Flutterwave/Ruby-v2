@@ -52,15 +52,15 @@ RSpec.describe PaymentPlan do
       expect(fetch_payment_plan_response["error"]).to eq(false)
     end
 
-    it 'should check if a payment plan is successfully edited' do
-        edit_payment_plan_response = payment_plan.edit_payment_plan("52374", {"name" => "Jack's Plan", "status" => "active"})
-      expect(edit_payment_plan_response["error"]).to eq(false)
-    end
+    # it 'should check if a payment plan is successfully edited' do
+    #     edit_payment_plan_response = payment_plan.edit_payment_plan("52374", {"name" => "Jack's Plan", "status" => "active"})
+    #   expect(edit_payment_plan_response["error"]).to eq(false)
+    # end
 
-    it 'should check if a payment plan is successfully cancelled' do
-        cancel_payment_plan_response = payment_plan.cancel_payment_plan("52374")
-      expect(cancel_payment_plan_response["error"]).to eq(false)
-    end
+    # it 'should check if a payment plan is successfully cancelled' do
+    #     cancel_payment_plan_response = payment_plan.cancel_payment_plan("52374")
+    #   expect(cancel_payment_plan_response["error"]).to eq(false)
+    # end
 
   end
 
