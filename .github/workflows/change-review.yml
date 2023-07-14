@@ -1,7 +1,7 @@
-name: Review changes on Dev (Commits/PRs)
+name: Review changes on Staging (Commits/PRs)
 on:
   push:
-    branches: ["dev"]
+    branches: ["staging"]
   pull_request:
     types:
       - opened
