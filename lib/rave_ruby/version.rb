@@ -1,3 +1,3 @@
 class RaveRuby
-  VERSION = "0.1.3"
+  VERSION = "1.1.3"
 end
